@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>My first three.js app</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+        <script src="js/three.js"></script>
+		<script>
+            // // Our Javascript will go here.
+            // var scene = new THREE.Scene();
+            // var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+            // var renderer = new THREE.WebGLRenderer();
+            // renderer.setSize( window.innerWidth/2, window.innerHeight/2 );
+            // document.body.appendChild( renderer.domElement );
+            
+            // // add Cube
+            // var geometry = new THREE.BoxGeometry(1, 1, 1);
+            // var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+            // var cube = new THREE.Mesh( geometry, material);
+            
+            // camera.position.z = 5;
+            // scene.add( cube );
+            
+            // function animate() 
+            // {
+            //     requestAnimationFrame( animate );
+            //     cube.rotation.x += 0.01;
+            //     cube.rotation.y += 0.01;
+            //     renderer.render( scene, camera );
+            // }
+            // animate();
+            function DS( computorId ){
+                this.computorId = computorId;
+                //不同的电脑有不同的配置。
+                this.data = {
+                    
+                    mouseInfo : "鼠标",
+
+                    mousePrice : "999",
+
+                    keyboardinfo : "键盘",
+
+                    keyboardprice : "888",
+
+                    lcdInfo : "驱动",
+
+                    lcdPrice : "888"
+
+                    /*
+                    *略去其他音响，声卡，先卡等属性
+                    */
+                }
+            }
+
+            //DS 您可以当做数据库系统，或者前端开发过程中你也可以当做后台返回的json数据。 
+            DS.prototype = {
+
+                constructor : DS,
+
+                get_mouse_info : function() { return this.data.mouseInfo; }, //取回鼠标信息
+
+                get_mouse_price : function() { return this.data.mousePrice; }, //取回鼠标价格
+
+                get_keyboard_info : function() { return this.data.keyboardinfo; },//取回键盘信息
+
+                get_keyboard_price : function() { return this.data.keyboardprice; }//取回键盘信息
+
+                /*
+                *还有其他一些关于显示器，音响，声卡等等信息和价格
+                */
+            }
+            function Computer( id, data_source ){
+                this.id = id;
+                this.data_source = data_source;
+            }
+
+            //没有重构之前的源代码，这种写法中规中矩，初级程序员都会直观想到这种方式。作为大牛的你一定不会这么平庸的写代码
+            Computer.prototype = {
+                mouse : function() {
+                    var info = this.data_source.get_mouse_info( this.id ),
+                        price = this.data_source.get_mouse_price( this.id ),
+                        result = "mouse:" + info + price;
+                    var val = price >= 100?  "*" + result :  result;;
+                    return val;
+                },
+                keyboard : function() {
+                    var info = this.data_source.get_keyboard_info( this.id ),
+                        price = this.data_source.get_keyboard_price( this.id ),
+                        result = "mouse:" + info + price;
+                    var val = price >= 100?  "*" + result :  result;;
+                    return val;
+                }
+
+                /*
+
+            此处略去其他显示器，音响之类的信息。
+
+            */
+            }
+            var zs = new Computer('2834750234', new DS(2342341244));
+		</script>
+	</body>
+</html>
