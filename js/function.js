@@ -52,3 +52,78 @@ Quo.prototype.get_status = function() {
 var myQuo = new Quo("confused");
 document.writeln(myQuo.get_status());
 
+/*
+ * Apply调用模式（Apply invocation pattern）
+ */
+// 构造一个包含两个数字的数组，并讲它们相加
+var array = [3,4];
+var sum = add.apply(null, array); 
+console.log(sum);
+// 构造一个包含status成员的对象
+var statusObject = {
+    status: 'A-OK'
+};
+var status = Quo.prototype.get_status.apply(statusObject);
+console.log(status);
+
+/*
+ * 扩充类型的功能（Augmenting types）
+ */
+Function.prototype.method = function (name, func) {
+    if(!this.prototype[name]) {
+        this.prototype[name] = func;
+    }
+    return this;
+};
+// 数字提取整数类型
+Number.method('integer', function() {
+    return Math[this < 0 ? 'ceil' : 'floor'](this);
+});
+document.writeln((-10/3).integer());
+// 移除字符串首尾空白的方法
+String.method('trim', function() {
+    return this.replace(/^\s+|\s+$/g, '');
+});
+document.writeln('"' + "    neat    ".trim() + '"');
+
+/*
+ * 递归（Recursion）
+ */
+var hanoi = function ( disc, src, aux, dst) {
+    if (disc > 0) {
+        hanoi( disc - 1, src, dst, aux);
+        document.writeln('Move disc ' + disc + " from " + src + " to " + dst);
+        hanoi( disc-1, aux, src, dst);
+    }
+};
+hanoi(3, 'Src', 'Aux', 'Dst');
+// 递归函数可以非常高效地操作树形结构
+// 定义walk_the_DOM函数，它从某个指定的节点开始，按HMTL源码中的顺序
+// 访问该树的每个节点
+// 它会调用一个函数，并依次传递每个节点给它。walk_the_DOM调用自身去
+// 处理每一个子节点
+var walk_the_DOM = function walk (node, func) {
+    func(node);
+    node = node.firstChild;
+    while (node) {
+        walk(node, func);
+        node = node.nextSibling;
+    }
+};
+// 定义 getElementsByAttribute 函数，它以一个属性名称字符串
+// 和一个可选的匹配值作为参数。
+// 它调用walk_the_DOM，传递一个用来查找节点属性名的函数作为参数
+// 匹配的节点会累加到一个结果数组中
+var getElementsByAttribute = function (att, value) {
+    var results = [];
+    
+    walk_the_DOM(document.body, function (node) {
+        var actual = node.nodeType === 1 && node.getAttribute(att);
+        if(typeof actual === 'string' && (actual === value || typeof value !== 'string')) {
+            results.push(node);
+        }
+    });
+
+    return results;
+};
+
