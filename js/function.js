@@ -127,3 +127,137 @@ var getElementsByAttribute = function (att, value) {
     return results;
 };
 
+/*
+ * 闭包（Closure）
+ * 作用域的好处是内部函数可以访问定义它外部函数的参数和变量（除了this和arguments)
+ */
+//  保护myObject中的value值不被非法更改
+var myObject = (function () {
+    var value = 0;
+    return {
+        increment: function (inc) {
+            value += typeof inc === 'number' ? inc : 1;
+        },
+        getValue: function () {
+            return value;
+        }
+    };
+}());
+
+document.writeln("Rebuild myObject with closure");
+myObject.increment();
+document.writeln(myObject.getValue());
+
+myObject.increment();
+document.writeln(myObject.getValue());
+
+myObject.increment();
+document.writeln(myObject.getValue());
+// 创建一个名为quo的构造函数
+// 它构造出带有get_status方法和status私有属性的一个对象
+var quo = function (status) {
+    return {
+        get_status: function() {
+            return status;
+        }
+    };
+};
+var myQuo = quo('amazed');
+document.writeln(myQuo.get_status());
+// 定义一个函数， 它设置一个DOM节点为黄色， 然后把它渐变为白色
+var fade = function (node) {
+    var level = 1;
+    var step = function () {
+        var hex = level.toString(16);
+        console.log(hex);
+        node.style.backgroundColor = '#FFFF' + hex + hex;
+        if (level < 15) {
+            level += 1;
+            setTimeout(step, 100);
+        }
+    };
+    setTimeout(step, 100);
+};
+fade(document.body);
+// Bad Example
+var add_the_handlers = function (nodes) {
+    var i;
+    for (i = 0; i < nodes.length; i += 1){
+        nodes[i].onclick = function (e) {
+            alert(i);
+        };
+    }
+};
+// Good Example
+var add_the_handlers = function (nodes) {
+    var helper = function (i) {
+        return function (e) {
+            alert(i);
+        };
+    };
+    var i;
+    for (i = 0; i < nodes.length; i += 1) {
+        nodes[i].onclick = helper(i);
+    }
+}
+
+/*
+ * 回调（Callbacks）
+ */
+
+/*
+ * 模块（Module）
+ */
+String.method('deentityify', function () {
+    // 字符实体表，它映射字符实体的名字到对应的字符
+    var entity = {
+        quot: '"',
+        lt: '<',
+        gt: '>'
+    };
+
+    // 返回deentityify方法
+    return function () {
+        return this.replace(/&([^&;]+);/g, 
+            function (a, b) {
+                var r = entity[b];
+                return typeof r === 'string' ? r : a;
+            }
+        );
+    }
+}());
+document.writeln('&lt;&quot;&gt;'.deentityify());
+// 构造一个用来产生序列号的对象
+var serial_maker = function () {
+    // 返回一个用来产生唯一字符串的对象
+    // 唯一字符串由两部分组成：前缀+序列号
+    // 该对象包含一个设置前缀的方法， 一个设置序列号的方法
+    // 和一个产生唯一字符串的gensym方法
+    var prefix = '';
+    var seq = 0;
+    return {
+        set_prefix: function (p) {
+            prefix = String (p);
+        },
+        set_seq: function (s) {
+            seq = s;
+        },
+        gensym: function () {
+            var result = prefix + seq;
+            seq += 1;
+            return result;
+        }
+    };
+};
+var seqer = serial_maker();
+seqer.set_prefix('Q');
+seqer.set_seq(1000);
+var unique = seqer.gensym();
+
+/*
+ * 柯里化（Curry）
+ */
+
+/*
+ * 记忆化（Memoization)
+ */
