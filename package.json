@@ -1,0 +1,30 @@
+{
+  "name": "jtsgoodparts",
+  "version": "0.0.1",
+  "description": "learn jt and ts good parts",
+  "main": "./dist/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Penergy/JSGoodParts.git"
+  },
+  "author": "penergy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Penergy/JSGoodParts/issues"
+  },
+  "homepage": "https://github.com/Penergy/JSGoodParts#readme",
+  "devDependencies": {
+    "browserify": "^16.2.3",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-typescript": "^5.0.0",
+    "gulp-util": "^3.0.8",
+    "tsify": "^4.0.1",
+    "typescript": "^3.2.2",
+    "vinyl-source-stream": "^2.0.0",
+    "watchify": "^3.11.0"
+  }
+}
