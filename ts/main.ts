@@ -46,6 +46,22 @@ console.log(account.getBalance());
 console.log(account.deposit(100))
 console.log(account.writeCheck(50));
 
+// Inheritance method
+class c {
+    hi(msg: string) {
+        console.log("This is father: " + msg);
+    }
+}
+
+class d extends c {
+    hi(msg: string) {
+        console.log("This is child: " + msg);
+    }
+}
+
+let dInstance = new d();
+dInstance.hi("hello world!");
+
 /**
  * Types Enum
  */
