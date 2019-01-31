@@ -22,9 +22,13 @@
     "gulp": "^4.0.0",
     "gulp-typescript": "^5.0.0",
     "gulp-util": "^3.0.8",
+    "three": "^0.100.0",
     "tsify": "^4.0.1",
     "typescript": "^3.2.2",
     "vinyl-source-stream": "^2.0.0",
     "watchify": "^3.11.0"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.12"
   }
 }

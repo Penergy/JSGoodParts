@@ -1,4 +1,5 @@
 import { sayHello } from "./greet";
+import "reflect-metadata";
 
 /**
  * Import a module
@@ -154,3 +155,11 @@ function applyMixins(derivedCtor: any, baseCtors: any[]) {
 let sObj = new SmartObject();
 sObj.load();
 sObj.loadProductStructure();
+
+/**
+ * Reflect / Decorator
+ */
+function logType(target: any, key: string)
+{
+     
+}
