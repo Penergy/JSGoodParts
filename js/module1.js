@@ -27,11 +27,24 @@ document.body.appendChild( renderer.domElement );
 // add Cube
 var geometry = new THREE.BoxGeometry(10, 10, 10);
 var material = new THREE.MeshBasicMaterial({ color: 0x089998 });
-var cube = new THREE.Mesh( geometry, material);
+var cubeMaterials = [ 
+    new THREE.MeshBasicMaterial({color:0xff0000, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
+    new THREE.MeshBasicMaterial({color:0x00ff00, transparent:true, opacity:0.8, side: THREE.DoubleSide}), 
+    new THREE.MeshBasicMaterial({color:0x0000ff, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
+    new THREE.MeshBasicMaterial({color:0xffff00, transparent:true, opacity:0.8, side: THREE.DoubleSide}), 
+    new THREE.MeshBasicMaterial({color:0xff00ff, transparent:true, opacity:0.8, side: THREE.DoubleSide}), 
+    new THREE.MeshBasicMaterial({color:0x00ffff, transparent:true, opacity:0.8, side: THREE.DoubleSide}), 
+];
+// Create a MeshFaceMaterial, which allows the cube to have different materials on each face 
+var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials); 
+var cube = new THREE.Mesh(geometry, cubeMaterial);
+// var cube = new THREE.Mesh( geometry, material);
             
+camera.position.x = 50;
+camera.position.y = 20;
 camera.position.z = 50;
 scene.add(_wcsTrihedron.original);
-scene.add( cube );
+//scene.add( cube );
 
 // 
 var controls;
@@ -46,6 +59,22 @@ controls.staticMoving = true;
 controls.dynamicDampingFactor = 0.3;
 controls.keys = [ 65, 83, 68 ];
 //controls.addEventListener( 'change', renderer );
+
+var getCameraInfo = function () {
+    var infoObject = {};
+    infoObject.perspective = {
+			pos: camera.position.toArray(),
+			rot: camera.quaternion.toArray(),
+			tgt: controls.target.toArray(),
+			up: camera.up.toArray(),
+			zoom: camera.zoom,
+			fov: camera.fov,
+			aspect: camera.aspect,
+			near: camera.near,
+			far: camera.far
+        };
+    return infoObject;
+}
             
 function animate() 
 {
@@ -53,6 +82,15 @@ function animate()
     //cube.rotation.x += 0.01;
     //cube.rotation.y += 0.01;
     controls.update();
+    //console.log(cube.matrix.elements);
+    //console.log(cube.matrixWorld.elements);
+    //console.log(cube.matrix);
+    //console.log(camera.matrix);
+    //cube.lookAt(camera.position);
+    var cubeTest = cube;
+    _wcsTrihedron.render(renderer, getCameraInfo() );
     renderer.render( scene, camera );
 }
+
 animate();
+// renderer.render( scene, camera );
