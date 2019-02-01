@@ -18,6 +18,7 @@ console.log(_wcsTrihedron);
 // Our Javascript will go here.
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+var combine = new THREE.Group();
 
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
@@ -38,13 +39,18 @@ var cubeMaterials = [
 // Create a MeshFaceMaterial, which allows the cube to have different materials on each face 
 var cubeMaterial = new THREE.MeshFaceMaterial(cubeMaterials); 
 var cube = new THREE.Mesh(geometry, cubeMaterial);
-// var cube = new THREE.Mesh( geometry, material);
-            
+combine.add(cube);
+
+// Another cube
+var cube2 = cube.clone();
+cube2.position.set(0, 0, 15);
+combine.add(cube2);
+
 camera.position.x = 50;
 camera.position.y = 20;
 camera.position.z = 50;
 scene.add(_wcsTrihedron.original);
-//scene.add( cube );
+scene.add( combine );
 
 // 
 var controls;
@@ -75,6 +81,30 @@ var getCameraInfo = function () {
         };
     return infoObject;
 }
+
+var testRender = function (obj) {
+    var _camera = camera.clone();
+    var camPos = new THREE.Vector3().fromArray( camera.position.toArray() );
+	var tgt = new THREE.Vector3().fromArray( controls.target.toArray() );
+    
+    camPos.sub( tgt );
+	camPos.normalize();
+
+	camPos.setLength( 50 );
+
+	_camera.position.copy( camPos );
+	_camera.up.fromArray( camera.up.toArray() );
+	_camera.lookAt( scene.position );
+
+	if ( obj.children && obj.children.length !== 0 ) {
+		for ( var i = 0, len = obj.children.length; i < len; i++ ) {
+			obj.children[ i ].up.copy( _camera.up );
+			obj.children[ i ].lookAt( new THREE.Vector3().addVectors( _camera.position, obj.children[ i ].position ) );
+		}
+	}
+
+	renderer.render( scene, _camera );
+}
             
 function animate() 
 {
@@ -88,7 +118,8 @@ function animate()
     //console.log(camera.matrix);
     //cube.lookAt(camera.position);
     var cubeTest = cube;
-    _wcsTrihedron.render(renderer, getCameraInfo() );
+    //_wcsTrihedron.render(renderer, getCameraInfo() );
+    testRender(combine);
     renderer.render( scene, camera );
 }
 
