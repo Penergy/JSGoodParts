@@ -2,8 +2,11 @@ import * as THREE from './three.module.js';
 import TrackballControls from './TrackballControls.js';
 import WCSTrihedron from './WCSTrihedron.js';
 
+/**
+ * Demo: flatten function to screen 
+ */
+
 var _wcsTrihedron = new WCSTrihedron();
-console.log(_wcsTrihedron);
 
 // Our Javascript will go here.
 var scene = new THREE.Scene();
@@ -17,7 +20,6 @@ document.body.appendChild( renderer.domElement );
             
 // add Cube
 var geometry = new THREE.BoxGeometry(10, 10, 10);
-var material = new THREE.MeshBasicMaterial({ color: 0x089998 });
 var cubeMaterials = [ 
     new THREE.MeshBasicMaterial({color:0xff0000, transparent:true, opacity:0.8, side: THREE.DoubleSide}),
     new THREE.MeshBasicMaterial({color:0x00ff00, transparent:true, opacity:0.8, side: THREE.DoubleSide}), 
@@ -45,7 +47,6 @@ scene.add( combine );
 // 
 var controls;
 controls = new TrackballControls(camera);
-console.log(controls);
 controls.rotateSpeed = 1.0;
 controls.zoomSpeed = 1.2;
 controls.panSpeed = 0.8;
@@ -54,24 +55,11 @@ controls.noPan = false;
 controls.staticMoving = true;
 controls.dynamicDampingFactor = 0.3;
 controls.keys = [ 65, 83, 68 ];
-//controls.addEventListener( 'change', renderer );
 
-var getCameraInfo = function () {
-    var infoObject = {};
-    infoObject.perspective = {
-			pos: camera.position.toArray(),
-			rot: camera.quaternion.toArray(),
-			tgt: controls.target.toArray(),
-			up: camera.up.toArray(),
-			zoom: camera.zoom,
-			fov: camera.fov,
-			aspect: camera.aspect,
-			near: camera.near,
-			far: camera.far
-        };
-    return infoObject;
-}
-
+/**
+ * Implement for flatten to screen
+ * @param {THREE.Group} obj 
+ */
 var testRender = function (obj) {
     var _camera = camera.clone();
     var camPos = new THREE.Vector3().fromArray( camera.position.toArray() );
@@ -107,4 +95,3 @@ function animate()
 }
 
 animate();
-// renderer.render( scene, camera );
