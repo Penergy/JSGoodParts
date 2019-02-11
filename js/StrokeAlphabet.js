@@ -1,7 +1,9 @@
 //© 2016 SIEMENS PRODUCT LIFECYCLE MANAGEMENT SOFTWARE INC
 
-import SceneGraph from "./SceneGraph";
-import { BufferGeometry, BufferAttribute, LineSegments } from "three";
+//import SceneGraph from "./SceneGraph";
+//import { BufferGeometry, BufferAttribute, LineSegments } from "./three.module.js";
+import * as THREE from "./three.module.js";
+import PMIEntity from "./PMI.js";
 
 //import Debug from "debug";
 //var debug = Debug( "PLMVisWeb:debug:StrokeAlphabet" );
@@ -67,9 +69,9 @@ StrokeAlphabet.prototype.getString = function ( inputString, fontIndex, textMate
 		return newArray;
 	};
 
-	var geo = new BufferGeometry();
-	geo.setIndex( new BufferAttribute( new Uint16Array( 0 ), 1 ) );
-	geo.addAttribute( 'position', new BufferAttribute( new Float32Array( 0 ), 3 ) );
+	var geo = new THREE.BufferGeometry();
+	geo.setIndex( new THREE.BufferAttribute( new Uint16Array( 0 ), 1 ) );
+	geo.addAttribute( 'position', new THREE.BufferAttribute( new Float32Array( 0 ), 3 ) );
 	var positions_array = [];
 	var indices_array = [];
 
@@ -110,7 +112,7 @@ StrokeAlphabet.prototype.getString = function ( inputString, fontIndex, textMate
 		geo.attributes.position.count = geo.attributes.position.array.length/geo.attributes.position.itemSize;
 		geo.index.count = geo.index.array.length/geo.index.itemSize;
 	geo.computeBoundingBox();
-	return new SceneGraph.PmiText( geo, textMaterial, LineSegments );
+	return new PMIEntity.PmiText( geo, textMaterial, THREE.LineSegments );
 };
 
 export default StrokeAlphabet;
