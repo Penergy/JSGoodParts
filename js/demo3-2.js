@@ -1,5 +1,9 @@
 //import jQuery from "../node_modules/jquery/dist/jquery.js";
 import * as THREE from "./three.module.js";
+/**
+ * Source from: https://aerotwist.com/tutorials/an-introduction-to-shaders-part-2/ 
+ */
+
 // export for others scripts to use
 // window.$ = jQuery;
 // window.jQuery = jQuery;
@@ -37,11 +41,22 @@ renderer.setSize(WIDTH, HEIGHT);
 $container.append(renderer.domElement);
 
 // create the sphere's material
-console.log($("#vertexshader").text());
-console.log($("#fragmentshader").text());
+var attributes = {
+    displacement: {
+        type: 'f', // a float
+        value: [] // an empty array
+    }
+};
+
+var vShader = $('#vertexshader');
+var fShader = $('#fragmentshader');
+
+// create the material and now
+// include the attributes property
 var shaderMaterial = new THREE.ShaderMaterial({
-    vertexShader: $("#vertexshader").text(),
-    fragmentShader: $("#fragmentshader").text()
+    attributes: attributes,
+    vertexShader: vShader.text(),
+    fragmentShader: fShader.text()
 });
 
 // set up the sphere vars
@@ -53,6 +68,15 @@ var sphere = new THREE.Mesh(
     new THREE.SphereGeometry(radius, segments, rings),
     shaderMaterial
 );
+
+// now populate the array of attributes
+var verts = sphere.geometry.vertices;
+
+var values = attributes.displacement.value;
+
+for (var v=0; v < verts.length; v++){
+    values.push(Math.random() * 30);
+}
 
 // add the sphere to the scene
 scene.add(sphere);
