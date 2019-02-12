@@ -41,8 +41,6 @@ renderer.setSize(WIDTH, HEIGHT);
 $container.append(renderer.domElement);
 
 // create the sphere's material
-console.log($("#vertexshader").text());
-console.log($("#fragmentshader").text());
 var shaderMaterial = new THREE.ShaderMaterial({
     vertexShader: $("#vertexshader").text(),
     fragmentShader: $("#fragmentshader").text()
