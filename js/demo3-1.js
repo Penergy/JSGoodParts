@@ -1,5 +1,9 @@
 //import jQuery from "../node_modules/jquery/dist/jquery.js";
 import * as THREE from "./three.module.js";
+/**
+ * Source from: https://aerotwist.com/tutorials/an-introduction-to-shaders-part-1/
+ */
+
 // export for others scripts to use
 // window.$ = jQuery;
 // window.jQuery = jQuery;
