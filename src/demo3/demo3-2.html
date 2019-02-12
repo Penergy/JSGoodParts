@@ -25,6 +25,7 @@
             // VS and FS containing the normal
             varying vec3 vNormal;
 
+            uniform float amplitude;
             attribute float displacement;
 
 		    void main()
@@ -40,9 +41,9 @@
                 // with other 3D vectors like
                 // positions and normals
                 vec3 newPosition = position + 
-                    normal * vec3(displacement);
+                    normal * vec3(displacement * amplitude);
                 
-
+                // 
 			    gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
 		    }
         </script>
@@ -51,6 +52,9 @@
 		    precision mediump float;
 		    #endif
             
+            //
+            uniform vec3 color;
+
             // same name and type as VS
             varying vec3 vNormal;
 
@@ -68,12 +72,13 @@
                 float dProd = max( 0.0, dot( vNormal, light ) );
 
                 // feed into our frag color
-			    gl_FragColor = vec4(
-                    dProd, // R
-                    dProd, // G
-                    dProd, // B
-                    1.0 // A
-                );
+                gl_FragColor = vec4( vec3( dProd ) * vec3( color ), 1.0);
+			    // gl_FragColor = vec4(
+                //     dProd, // R
+                //     dProd, // G
+                //     dProd, // B
+                //     1.0 // A
+                // );
 		    }
         </script>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
