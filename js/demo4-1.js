@@ -4,7 +4,7 @@ import OrbitAndPanControls from './OrbitAndPanControls.js';
 import WEBGL from "./WebGL.js";
 
 /**
- * Demo for Camera 
+ * Demo for Orthographic Camera 
  */
 
 if( WEBGL.isWebGLAvailable() === false ) {
