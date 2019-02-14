@@ -7,13 +7,15 @@ import { UniformsUtils, ShaderLib as THREE_ShaderLib, ShaderMaterial, DoubleSide
 
 /**
  * Demo for Perspective Camera with MouseScroll Event
+ * Algorithm from: https://beta.observablehq.com/@grantcuster/understanding-scale-and-the-three-js-perspective-camera
  */
 
 if( WEBGL.isWebGLAvailable() === false ) {
     document.body.appendChild( WEBGL.getWebGLErrorMessage() );
 }
 
-var renderer, scene, camera, controls, $container;
+var renderer, scene, camera, controls, $container, coordRefPlaneWithName;
+var PIXEL = 26;
 
 init();
 animate();
@@ -97,7 +99,7 @@ function createTexture() {
 
     var transform = new THREE.Matrix4(); // transform
     var pmiTextMaker = new StrokeAlphabet();
-    var coordRefPlaneWithName = new PMIEntity.PmiObject();
+    coordRefPlaneWithName = new PMIEntity.PmiObject();
     var whiteMat = new THREE.LineBasicMaterial( { color: 0xffffff, depthTest: false } );
     var text3D = pmiTextMaker.getString("Hello World", 1, whiteMat);
     var bbox = text3D.geometry.boundingBox;
@@ -161,7 +163,7 @@ function createTexture() {
     //coordRefPlaneWithName.add( refMsh );
     coordRefPlaneWithName.add( outlineMsh );
     coordRefPlaneWithName.add( text3D );
-    coordRefPlaneWithName.scale.set( 3, 3, 3 );
+    coordRefPlaneWithName.scale.set( 1, 1, 1 );
     coordRefPlaneWithName.position.set(-10, 0, 0);
 
     //
@@ -181,14 +183,35 @@ function MouseWheelHandler(e) {
     var mouseEventInit = e.target.tagName;
     
     if( mouseEventInit === "CANVAS" ) {
-        console.log(camera.);
         console.log("external:" + mouseEventInit);
+        console.log("aspect: " + camera.aspect);
+        console.log("fov: " + camera.fov);
+        console.log("near: " + camera.near );
+        console.log("far: " + camera.far);
+        console.log(camera.position);
+        console.log("zoom: " + camera.zoom);
+        //console.log("fav_fov_height: " + getFovHeight(camera));
+        var scale = getScale();
+        coordRefPlaneWithName.scale.set(1/scale*PIXEL, 1/scale*PIXEL, 1/scale*PIXEL);
+        console.log(getScale());
         event.preventDefault();// cross-browser wheel delta
         var e = window.event || e;
         var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-        console.log(delta);
-        console.log(e.deltaMode);
     }
     
     return false;
+}
+
+function getFovHeight( cameraObject) {
+    var half_fov = cameraObject.fov / 2;
+    var half_fov_radians = Math.PI / 180 * half_fov;
+    var half_fov_height = Math.tan(half_fov_radians) * camera.position.z;
+    return half_fov_height * 2;
+}
+
+function getScale( ) {
+    var fovHeight = getFovHeight(camera);
+    console.log(fovHeight);
+    console.log(renderer.domElement.height);
+    return renderer.domElement.height / fovHeight;
 }
