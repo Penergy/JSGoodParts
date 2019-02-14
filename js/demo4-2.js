@@ -40,6 +40,7 @@ function init() {
     var $container = document.getElementById('container');
     // start the renderer
     renderer.setSize(WIDTH, HEIGHT);
+    renderer.setClearColor( 0xbbbbbb, 1.0 )
 
     // attach the render-supplied DOM element
     $container.append(renderer.domElement);
@@ -67,7 +68,7 @@ function init() {
     
     // set scene
     scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0x050505 );
+    //scene.background = new THREE.Color( 0x050505 );
 
     // 
     scene.add(cube);
