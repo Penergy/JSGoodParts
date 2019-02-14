@@ -4,15 +4,16 @@ import WEBGL from "./WebGL.js";
 import StrokeAlphabet from "./StrokeAlphabet.js";
 import PMIEntity from "./PMI.js";
 import { UniformsUtils, ShaderLib as THREE_ShaderLib, ShaderMaterial, DoubleSide, RawShaderMaterial, Vector3, BufferGeometry, BufferAttribute, Matrix4, Box3, Mesh, Scene, LineSegments, Object3D } from "./three.module.js";
+
 /**
- * Demo for Perspective Camera 
+ * Demo for Perspective Camera with MouseScroll Event
  */
 
 if( WEBGL.isWebGLAvailable() === false ) {
     document.body.appendChild( WEBGL.getWebGLErrorMessage() );
 }
 
-var renderer, scene, camera, controls;
+var renderer, scene, camera, controls, $container;
 
 init();
 animate();
@@ -41,7 +42,7 @@ function init() {
 
     // set renderer
     renderer = new THREE.WebGLRenderer();
-    var $container = document.getElementById('container');
+    $container = document.getElementById('container');
     // start the renderer
     renderer.setSize(WIDTH, HEIGHT);
     renderer.setClearColor( 0x000000, 1.0 )
@@ -168,18 +169,26 @@ function createTexture() {
     {
         console.log("test");
         // IE9, Chrome, Safari, Opera
-        coordRefPlaneWithName.addEventListener("mousewheel", MouseWheelHandler, false);
+        renderer.domElement.addEventListener("wheel", MouseWheelHandler, false);
         // Firefox
-        coordRefPlaneWithName.addEventListener("DOMMouseScroll", MouseWheelHandler, false);
+        renderer.domElement.addEventListener("wheel", MouseWheelHandler, false);
     }
 
     return coordRefPlaneWithName;
 }
 
 function MouseWheelHandler(e) {
-    // cross-browser wheel delta
-    var e = window.event || e;
-    var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-    console.log(delta);
+    var mouseEventInit = e.target.tagName;
+    
+    if( mouseEventInit === "CANVAS" ) {
+        console.log(camera.);
+        console.log("external:" + mouseEventInit);
+        event.preventDefault();// cross-browser wheel delta
+        var e = window.event || e;
+        var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+        console.log(delta);
+        console.log(e.deltaMode);
+    }
+    
     return false;
 }

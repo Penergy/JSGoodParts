@@ -458,7 +458,7 @@ var TrackballControls = function ( object, domElement ) {
 	}
 
 	function mousewheel( event ) {
-
+		console.log("internal: " + event.target.tagName);
 		if ( _this.enabled === false ) return;
 
 		if ( _this.noZoom === true ) return;
